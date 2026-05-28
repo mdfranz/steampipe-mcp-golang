@@ -1,0 +1,15 @@
+# Compiled Go binaries
+steampipe-mcp-golang
+
+# Python virtual environments
+.venv/
+__pycache__/
+*.pyc
+
+# Local log files
+*.log
+
+# Workspace cached metadata
+.antigravitycli/
+.claude/
+docs/.antigravitycli/
