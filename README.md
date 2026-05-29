@@ -112,33 +112,51 @@ This will run five progressive discovery, single-table query, and row/payload tr
 
 ## 🔌 Integrating with AI Clients
 
-### 1. Claude Desktop
-Add the following block to your Claude Desktop configuration file (typically at `~/Library/Application Support/Claude/claude_desktop_config.json`):
+### Gemini
 
-```json
+Put in `~/.gemini/settings.json`
+```
 {
   "mcpServers": {
     "steampipe": {
-      "command": "/path/to/steampipe-mcp-golang",
+      "command": "steampipe-mcp-golang",
       "env": {
         "STEAMPIPE_MCP_WORKSPACE_DATABASE": "postgresql://steampipe@localhost:9193/steampipe",
-        "STEAMPIPE_MCP_LOGFILE": "/Users/YOUR_USER/steampipe-mcp.log"
+        "STEAMPIPE_MCP_DEBUG": "1"
+
       }
     }
   }
 }
 ```
 
-### 2. Cursor
-1. Go to **Cursor Settings** ➔ **Features** ➔ **MCP**.
-2. Click **+ Add New MCP Server**.
-3. Configure:
-   * **Name**: `steampipe`
-   * **Type**: `stdio`
-   * **Command**: `/path/to/steampipe-mcp-golang`
+# Steampipe Configuration
 
----
+## Start Service
 
-## ⚖️ License
+```
+% steampipe service start
+Steampipe service is running:
 
-Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
+Database:
+
+ Host(s):            127.0.0.1, ::1, fdfe:5e6c:2e69:98de:c31d:5fee:95d6:6b63, 2607:fb91:4b0d:d213:907f:45f1:2533:78c6, 2607:fb91:4b0d:d213:cb0:2321:4fe:55af, fdfe:5e6c:2e69:98de:104f:7319:8806:538a, 192.168.12.128
+ Port:               9193
+ Database:           steampipe
+ User:               steampipe
+ Password:           ********* [use --show-password to reveal]
+ Connection string:  postgres://steampipe@127.0.0.1:9193/steampipe
+```
+
+
+## Confirm Config
+`~/.steampipe/config/aws.spc` MUST have regions set to `[*]` 
+
+```
+connection "aws" {
+  plugin = "aws"
+  regions = ["*"] # All regions
+  max_error_retry_attempts = 9
+  min_error_retry_delay = 25
+}
+```

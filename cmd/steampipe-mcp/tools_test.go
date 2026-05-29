@@ -41,6 +41,37 @@ func TestFormatDBError(t *testing.T) {
 	}
 }
 
+func TestMissingRelationName(t *testing.T) {
+	err := errors.New("relation \"aws_ec2_load_balancer\" does not exist")
+	got := missingRelationName(err)
+	if got != "aws_ec2_load_balancer" {
+		t.Fatalf("missingRelationName() = %q, expected %q", got, "aws_ec2_load_balancer")
+	}
+}
+
+func TestRelationSearchCandidates_LoadBalancer(t *testing.T) {
+	got := relationSearchCandidates("aws_ec2_load_balancer")
+	if len(got) == 0 || got[0] != "aws_ec2_load_balancer" {
+		t.Fatalf("expected first candidate to be the missing relation, got %#v", got)
+	}
+
+	has := func(s string) bool {
+		for _, c := range got {
+			if c == s {
+				return true
+			}
+		}
+		return false
+	}
+
+	if !has("load_balancer") {
+		t.Fatalf("expected candidates to include %q, got %#v", "load_balancer", got)
+	}
+	if !has("ec2_load_balancer") {
+		t.Fatalf("expected candidates to include %q, got %#v", "ec2_load_balancer", got)
+	}
+}
+
 func TestFormatPluginListMarkdown(t *testing.T) {
 	rows := []map[string]any{
 		{

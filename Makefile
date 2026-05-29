@@ -1,6 +1,6 @@
 .PHONY: all build run clean test fmt vet install
 
-APP_NAME = steampipe-mcp-golang
+APP_NAME = steampipe-mcp
 
 all: fmt vet build
 
@@ -8,7 +8,7 @@ build:
 	go build -o $(APP_NAME) ./cmd/steampipe-mcp
 
 run:
-	go run ./cmd/steampipe-mcp
+	go run ./cmd/${APP_NAME}
 
 test:
 	go test -v ./...
@@ -26,3 +26,4 @@ install: build
 clean:
 	rm -f $(APP_NAME)
 	rm -f *.lock
+	rm -f *.log

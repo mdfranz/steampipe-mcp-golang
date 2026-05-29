@@ -135,13 +135,19 @@ func (sr *StatusResource) getStatus(ctx context.Context) *statusPayload {
 	// 2. Steampipe metadata (best effort)
 	if dbStat.Reachable {
 		var pluginCount int
-		err := sr.pool.QueryRow(ctx, "SELECT count(distinct plugin) FROM steampipe_connection").Scan(&pluginCount)
+		err := sr.pool.QueryRow(ctx, "SELECT count(distinct plugin) FROM steampipe_internal.steampipe_connection").Scan(&pluginCount)
 		if err == nil {
 			payload.Steampipe.PluginCount = pluginCount
 		}
 
 		var tableCount int
-		err = sr.pool.QueryRow(ctx, "SELECT count(*) FROM steampipe_table").Scan(&tableCount)
+		err = sr.pool.QueryRow(ctx, `
+			SELECT count(*)
+			FROM pg_catalog.pg_class c
+			JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+			WHERE c.relkind = 'f'
+			  AND n.nspname NOT IN ('pg_catalog', 'information_schema', 'steampipe_internal', 'steampipe_command')
+		`).Scan(&tableCount)
 		if err == nil {
 			payload.Steampipe.TableCount = tableCount
 		}

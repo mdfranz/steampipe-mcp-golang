@@ -9,9 +9,10 @@ import (
 const BestPracticesPromptText = `You are working with Steampipe, a Postgres FDW that exposes cloud and SaaS APIs as SQL tables. Use these tools in this order:
 
 1. ` + "`steampipe_plugin_list`" + ` — discover which plugins (aws, github, gcp, kubernetes, …) are connected. Skip this step only if the user already named a plugin.
-2. ` + "`steampipe_table_list`" + ` — list tables for the relevant plugin(s). Filter by plugin prefix (e.g. tables starting with ` + "`aws_`" + `) to keep the response small.
-3. ` + "`steampipe_table_show`" + ` — inspect a specific table's columns, types, and descriptions BEFORE writing SQL. Steampipe tables often have hundreds of columns; guessing column names will fail.
-4. ` + "`steampipe_query`" + ` — only now run the SQL. Always project specific columns (avoid ` + "`SELECT *`" + `) and add a ` + "`LIMIT`" + ` for exploratory queries.
+2. ` + "`steampipe_table_search`" + ` — when you don't know the exact table name, search by keyword (e.g. ` + "`load_balancer`" + `, ` + "`iam`" + `, ` + "`s3`" + `). Optionally filter by plugin (e.g. ` + "`aws`" + `).
+3. ` + "`steampipe_table_list`" + ` — list tables for the relevant plugin(s). Filter by plugin prefix (e.g. tables starting with ` + "`aws_`" + `) to keep the response small.
+4. ` + "`steampipe_table_show`" + ` — inspect a specific table's columns, types, and descriptions BEFORE writing SQL. Steampipe tables often have hundreds of columns; guessing column names will fail.
+5. ` + "`steampipe_query`" + ` — only now run the SQL. Always project specific columns (avoid ` + "`SELECT *`" + `) and add a ` + "`LIMIT`" + ` for exploratory queries.
 
 Worked example: "Find S3 buckets without versioning."
 - Call ` + "`steampipe_table_show`" + ` with table=` + "`aws_s3_bucket`" + ` to confirm ` + "`versioning_enabled`" + ` is the right column.

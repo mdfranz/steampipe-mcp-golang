@@ -72,7 +72,7 @@ func main() {
 		Version: "0.1.0",
 	}
 	serverOpts := &mcp.ServerOptions{
-		Instructions: "Recommended flow: steampipe_plugin_list -> steampipe_table_list -> steampipe_table_show -> steampipe_query. Never run SELECT *; always include LIMIT for explorative queries.",
+		Instructions: "Recommended flow: steampipe_plugin_list -> steampipe_table_search/steampipe_table_list -> steampipe_table_show -> steampipe_query. Never run SELECT *; always include LIMIT for exploratory queries.",
 		Logger:       slog.Default(),
 	}
 	server := mcp.NewServer(impl, serverOpts)
