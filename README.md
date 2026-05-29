@@ -160,3 +160,7 @@ connection "aws" {
   min_error_retry_delay = 25
 }
 ```
+
+# Related / Referenced Projects
+- https://github.com/turbot/steampipe-mcp
+- https://github.com/mdfranz/osqueryi-mcp
